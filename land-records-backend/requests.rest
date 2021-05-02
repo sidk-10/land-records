@@ -1,0 +1,26 @@
+GET http://localhost:3000/api/lands
+
+###
+POST http://localhost:3000/api/lands
+Content-Type: application/json
+
+{
+    "land": {
+        "id": 101,
+        "name" : "Land 101",
+        "area": "Area 101",
+        "city": "City 101",
+        "state": "State 101",
+        "country": "Country 101"
+    }
+}
+
+###
+DELETE http://localhost:3000/api/lands
+Content-Type: application/json
+
+{
+    "land": {
+        "id": 101
+    }
+}
