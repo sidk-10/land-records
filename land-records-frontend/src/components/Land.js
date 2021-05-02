@@ -1,37 +1,65 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table, Button } from "reactstrap";
 import { withStyles } from "@material-ui/styles";
 import { IconButton } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
-
-const landRecord = {
-    id: "1",
-    name: "A",
-    area: "A",
-    city: "A",
-    state: "A",
-    country: "A",
-};
+import { useHistory, useLocation } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import { editLand as editLandAPI } from "../api";
+// const landRecord = {
+//     id: "1",
+//     name: "",
+//     area: "",
+//     city: "",
+//     state: "",
+//     country: "",
+// };
 
 const styles = {
     container: {
         color: "#454d55",
-        height: "100vh",
+        minHeight: "100vh",
     },
     table: {
         color: "#fff",
     },
 };
 
-const LandEditor = () => {
+const LandEditor = (props) => {
+    const [cookies, setCookie] = useCookies(["token"]);
+    const location = useLocation();
+    const history = useHistory();
+
+    const editLandName = () => {
+        let newLandName = document?.getElementById("landName")?.value;
+        let newLand = props.landRecord;
+        newLand.name = newLandName;
+        if (newLandName == "") {
+            alert("Land Name can't be empty!");
+            return;
+        }
+        editLandAPI({ land: props.landRecord }, cookies?.token)
+            .then((response) => {
+                // console.log(response);
+                alert("Land Name updated successfully!");
+                props.setLandRecord(newLand);
+                props.setEditMode(!props.editMode);
+                history.replace({ ...history, state: { record: newLand } });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
     return (
         <>
-            <div style={{ display: "inline-block" }} className="mr-2">
+            <div style={{ display: "inline-block" }} className="m-2">
                 <input
                     type="text"
                     id="landName"
                     placeholder="Enter new name"
                     className="form-control"
+                    autoFocus
+                    defaultValue={props.landRecord.name}
                 />
             </div>
             <div style={{ display: "inline-block" }}>
@@ -43,6 +71,7 @@ const LandEditor = () => {
                         position: "relative",
                         bottom: "2px",
                     }}
+                    onClick={editLandName}
                 >
                     Save
                 </Button>
@@ -53,6 +82,24 @@ const LandEditor = () => {
 
 const Land = (props) => {
     const { classes } = props;
+    const history = useHistory();
+    const location = useLocation();
+    const [landRecord, setLandRecord] = useState({
+        id: "",
+        name: "",
+        area: "",
+        city: "",
+        state: "",
+        country: "",
+    });
+    useEffect(() => {
+        // console.log(location);
+        try {
+            setLandRecord(location.state.record);
+        } catch (error) {
+            history.goBack();
+        }
+    }, []);
     const [editMode, setEditMode] = useState(false);
     return (
         <div style={{ background: "#eee" }}>
@@ -107,7 +154,12 @@ const Land = (props) => {
                                     }}
                                 >
                                     {editMode ? (
-                                        <LandEditor />
+                                        <LandEditor
+                                            landRecord={landRecord}
+                                            setLandRecord={setLandRecord}
+                                            editMode={editMode}
+                                            setEditMode={setEditMode}
+                                        />
                                     ) : (
                                         landRecord?.name
                                     )}
