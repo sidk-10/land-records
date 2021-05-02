@@ -1,8 +1,11 @@
 GET http://localhost:3000/api/lands
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjE5OTY3MTU1fQ.9DTv3XKO0lxfRFfdhZkp2xKDFVX6uex_LkYU_kpxxus
 
 ###
 POST http://localhost:3000/api/lands
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjE5OTY3MTU1fQ.9DTv3XKO0lxfRFfdhZkp2xKDFVX6uex_LkYU_kpxxus
 
 {
     "land": {
@@ -18,9 +21,19 @@ Content-Type: application/json
 ###
 DELETE http://localhost:3000/api/lands
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjE5OTY3MTU1fQ.9DTv3XKO0lxfRFfdhZkp2xKDFVX6uex_LkYU_kpxxus
 
 {
     "land": {
         "id": 101
     }
+}
+
+###
+POST http://localhost:3000/api/login
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "admin@123"
 }
