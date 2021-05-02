@@ -71,6 +71,7 @@ const Login = (props) => {
                                         name="username"
                                         placeholder="Username"
                                         id="username"
+                                        autoFocus
                                     />
                                 </div>
                                 <div className="form-group">
