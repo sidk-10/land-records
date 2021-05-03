@@ -9,10 +9,10 @@ app.use(express.json());
 const port = 3000;
 app.use(cors());
 
-const uri = "mongodb://localhost:27017/land-records";
+// const uri = "mongodb://localhost:27017/land-records";
+const uri = `mongodb+srv://admin:${process.env.DB_PASSWORD}@cluster0.d5azx.mongodb.net/land-records?retryWrites=true&w=majority`;
 let client = new MongoClient(uri, { useUnifiedTopology: true });
-client.connect();
-let collection = client.db("land-records").collection("lands");
+let collection = "";
 
 app.get("/", (req, res) => {
     res.send("API is Live!");
@@ -77,6 +77,8 @@ app.delete("/api/lands", authenticateToken, async (req, res) => {
 });
 
 app.listen(process.env.PORT || port, async () => {
+    await client.connect();
+    collection = client.db("land-records").collection("lands");
     console.log(
         `App listening at http://localhost:${process.env.PORT || port}`
     );
@@ -92,7 +94,7 @@ async function authenticateToken(req, res, next) {
 
     if (token == null) return res.sendStatus(401);
     await jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
-        console.log(err);
+        // console.log(err);
         if (err) {
             // console.log("error");
             return res.sendStatus(403);

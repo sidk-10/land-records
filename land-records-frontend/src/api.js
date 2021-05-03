@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const baseUrl = "http://localhost:3000/";
-// const baseUrl = "https://land-records-api.herokuapp.com";
+// const baseUrl = "http://localhost:3000/";
+const baseUrl = "https://land-records-api.herokuapp.com/";
 
 const getConfig = (url, method, contentType, data, token) => {
     return {
